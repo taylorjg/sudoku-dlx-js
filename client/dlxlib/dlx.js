@@ -1,9 +1,9 @@
 import { DataObject } from './dataObject';
 import { ColumnObject } from './columnObject';
 
-export default function* (matrix) {
+export default function* (matrix, onSearchStep) {
     const root = buildInternalStructure(matrix);
-    const searchState = new SearchState(root);
+    const searchState = new SearchState(root, onSearchStep);
     yield* search(searchState);
 };
 
@@ -35,6 +35,9 @@ const buildInternalStructure = matrix => {
 };
 
 function* search(searchState) {
+
+    searchState.searchStep();
+
     if (searchState.isEmpty()) {
         if (searchState.currentSolution.length) {
             yield searchState.currentSolution.slice().sort();
@@ -76,8 +79,9 @@ const uncoverColumn = c => {
 
 class SearchState {
 
-    constructor(root) {
+    constructor(root, onSearchStep) {
         this.root = root;
+        this.onSearchStep = onSearchStep;
         this.currentSolution = [];
     }
 
@@ -91,5 +95,9 @@ class SearchState {
 
     popRowIndex() {
         this.currentSolution.pop();
+    }
+
+    searchStep() {
+        this.onSearchStep(this.currentSolution);
     }
 };

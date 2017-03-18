@@ -17,7 +17,7 @@ const matrix2 = [
 
 const showAllSolutions = matrix => {
     console.log(`solutions to ${JSON.stringify(matrix)}:`);
-    for (const solution of solve(matrix)) {
+    for (const solution of solve(matrix, rows => console.log(`[onSearchStep] rows: ${JSON.stringify(rows)}`))) {
         console.log(`\tsolution: ${JSON.stringify(solution)}`);
     }
 };
