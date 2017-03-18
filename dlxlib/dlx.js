@@ -44,7 +44,7 @@ function* search(searchState) {
             return;
         }
     }
-    
+
     const c = chooseColumnWithFewestRows(searchState);
     coverColumn(c);
     for (let r = c.down; r !== c; r = r.down) {
@@ -98,6 +98,8 @@ class SearchState {
     }
 
     searchStep() {
-        this.onSearchStep(this.currentSolution);
+        if (this.onSearchStep) {
+            this.onSearchStep(this.currentSolution);
+        }
     }
 };

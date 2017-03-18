@@ -1,0 +1,32 @@
+.container {
+    margin-top: 20px;
+}
+
+#board td {
+    width: 40px;
+    height: 40px;
+}
+
+#board td {
+    border-left: 1px solid black;
+}
+
+#board td:nth-child(3n+1) {
+    border-left: 3px solid black;
+}
+
+#board td:nth-child(9) {
+    border-right: 3px solid black;
+}
+
+#board tr {
+    border-top: 1px solid black;
+}
+
+#board tr:nth-child(3n+1) {
+    border-top: 3px solid black;
+}
+
+#board tr:nth-child(9) {
+    border-bottom: 3px solid black;
+}

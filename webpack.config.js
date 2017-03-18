@@ -15,7 +15,8 @@ module.exports = {
     },
     plugins: [
         new CopyWebpackPlugin([
-            { context: './client', from: '*.html' }
+            { context: './client', from: '*.html' },
+            { context: './client', from: '*.css' }
         ])
     ],
     module: {
