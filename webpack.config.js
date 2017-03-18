@@ -4,7 +4,7 @@ const path = require('path');
 const serverPublic = path.join(__dirname, 'server', 'public');
 
 module.exports = {
-    entry: './client/app.js',
+    entry: ['babel-polyfill', './client/app.js'],
     output: {
         path: serverPublic,
         filename: 'bundle.js',
