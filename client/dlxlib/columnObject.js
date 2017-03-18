@@ -40,4 +40,10 @@ export class ColumnObject extends DataObject {
         dataObject.relinkIntoColumn();
         this.numberOfRows++;
     }
+
+    loopNext(fn) {
+        for (let next = this.nextColumnObject; next !== this; next = next.nextColumnObject) {
+            fn(next);
+        }
+    }
 }

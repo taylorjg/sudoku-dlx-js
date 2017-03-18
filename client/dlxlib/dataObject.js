@@ -1,5 +1,5 @@
 export class DataObject {
-    
+
     constructor(listHeader, rowIndex) {
         this.listHeader = listHeader;
         this.rowIndex = rowIndex;
@@ -34,5 +34,16 @@ export class DataObject {
     relinkIntoColumn() {
         this.down.up = this;
         this.up.down = this;
+    }
+
+    loopUp(fn) { this.loop(fn, 'up'); }
+    loopDown(fn) { this.loop(fn, 'down'); }
+    loopLeft(fn) { this.loop(fn, 'left'); }
+    loopRight(fn) { this.loop(fn, 'right'); }
+    
+    loop(fn, propName) {
+        for (let next = this[propName]; next !== this; next = next[propName]) {
+            fn(next);
+        }
     }
 }

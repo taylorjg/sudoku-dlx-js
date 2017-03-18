@@ -3,8 +3,8 @@ import { ColumnObject } from './columnObject';
 
 export default function* (matrix) {
     const root = buildInternalStructure(matrix);
-    const searchData = new SearchData(root);
-    yield* search(searchData);
+    const searchState = new SearchState(root);
+    yield* search(searchState);
 };
 
 const buildInternalStructure = matrix => {
@@ -34,55 +34,47 @@ const buildInternalStructure = matrix => {
     return root;
 };
 
-function* search(searchData) {
-    if (searchData.isEmpty()) {
-        if (searchData.currentSolution.length) {
-            yield searchData.currentSolution.slice().sort();
+function* search(searchState) {
+    if (searchState.isEmpty()) {
+        if (searchState.currentSolution.length) {
+            yield searchState.currentSolution.slice().sort();
             return;
         }
     }
     
-    const c = chooseColumnWithLeastRows(searchData);
+    const c = chooseColumnWithFewestRows(searchState);
     coverColumn(c);
     for (let r = c.down; r !== c; r = r.down) {
-        searchData.pushRowIndex(r.rowIndex);
-        for (let j = r.right; j !== r; j = j.right) coverColumn(j.listHeader);
-        yield* search(searchData);
-        for (let j = r.left; j !== r; j = j.left) uncoverColumn(j.listHeader);
-        searchData.popRowIndex();
+        searchState.pushRowIndex(r.rowIndex);
+        r.loopRight(j => coverColumn(j.listHeader));
+        yield* search(searchState);
+        r.loopLeft(j => uncoverColumn(j.listHeader));
+        searchState.popRowIndex();
     }
     uncoverColumn(c);
 }
 
-const chooseColumnWithLeastRows = searchData => {
+const chooseColumnWithFewestRows = searchState => {
     let chosenColumn = null;
-    for (let columnHeader = searchData.root.nextColumnObject; columnHeader !== searchData.root; columnHeader = columnHeader.nextColumnObject) {
-        if (!chosenColumn || columnHeader.numberOfRows < chosenColumn.numberOfRows) {
-            chosenColumn = columnHeader;
+    searchState.root.loopNext(column => {
+        if (!chosenColumn || column.numberOfRows < chosenColumn.numberOfRows) {
+            chosenColumn = column;
         }
-    }
+    });
     return chosenColumn;
 };
 
 const coverColumn = c => {
     c.unlinkColumnHeader();
-    for (let i = c.down; i !== c; i = i.down) {
-        for (let j = i.right; j !== i; j = j.right) {
-            j.listHeader.unlinkDataObject(j);
-        }
-    }
+    c.loopDown(i => i.loopRight(j => j.listHeader.unlinkDataObject(j)));
 };
 
 const uncoverColumn = c => {
-    for (let i = c.up; i !== c; i = i.up) {
-        for (let j = i.left; j !== i; j = j.left) {
-            j.listHeader.relinkDataObject(j);
-        }
-    }
+    c.loopUp(i => i.loopLeft(j => j.listHeader.relinkDataObject(j)));
     c.relinkColumnHeader();
 };
 
-class SearchData {
+class SearchState {
 
     constructor(root) {
         this.root = root;
