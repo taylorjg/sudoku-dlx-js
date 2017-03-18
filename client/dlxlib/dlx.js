@@ -1,11 +1,10 @@
 import { DataObject } from './dataObject';
 import { ColumnObject } from './columnObject';
 
-export default matrix => {
+export default function* (matrix) {
     const root = buildInternalStructure(matrix);
-    const solutions = [];
-    search(0, new SearchData(root), solutions);
-    return solutions;
+    const searchData = new SearchData(root);
+    yield* search(searchData);
 };
 
 const buildInternalStructure = matrix => {
@@ -35,31 +34,25 @@ const buildInternalStructure = matrix => {
     return root;
 };
 
-const search = (k, searchData, solutions) => {
-    searchData.incIterationCount();
-    if (searchData.empty()) {
+function* search(searchData) {
+    if (searchData.isEmpty()) {
         if (searchData.currentSolution.length) {
-            searchData.incSolutionCount();
-            solutions.push(searchData.currentSolution.slice().sort());
+            yield searchData.currentSolution.slice().sort();
+            return;
         }
-        return;
     }
+    
     const c = chooseColumnWithLeastRows(searchData);
     coverColumn(c);
     for (let r = c.down; r !== c; r = r.down) {
-        searchData.pushSolutionRowIndex(r.rowIndex);
-        for (let j = r.right; j !== r; j = j.right) {
-            coverColumn(j.listHeader);
-        }
-        search(k + 1, searchData, solutions);
-        for (let j = r.left; j !== r; j = j.left) {
-            uncoverColumn(j.listHeader);
-        }
-        searchData.popSolutionRowIndex();
+        searchData.pushRowIndex(r.rowIndex);
+        for (let j = r.right; j !== r; j = j.right) coverColumn(j.listHeader);
+        yield* search(searchData);
+        for (let j = r.left; j !== r; j = j.left) uncoverColumn(j.listHeader);
+        searchData.popRowIndex();
     }
     uncoverColumn(c);
-    return;
-};
+}
 
 const chooseColumnWithLeastRows = searchData => {
     let chosenColumn = null;
@@ -93,28 +86,18 @@ class SearchData {
 
     constructor(root) {
         this.root = root;
-        this.iterationCount = 0;
-        this.solutionCount = 0;
         this.currentSolution = [];
     }
 
-    empty() {
+    isEmpty() {
         return this.root.nextColumnObject === this.root;
     }
 
-    incIterationCount() {
-        this.iterationCount++;
-    }
-
-    incSolutionCount() {
-        this.solutionCount++;
-    }
-
-    pushSolutionRowIndex(rowIndex) {
+    pushRowIndex(rowIndex) {
         this.currentSolution.push(rowIndex);
     }
 
-    popSolutionRowIndex() {
+    popRowIndex() {
         this.currentSolution.pop();
     }
 };
