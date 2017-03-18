@@ -1,4 +1,4 @@
-import solve from './dlxlib/dlx';
+import solve from '../dlxlib';
 
 const matrix1 = [
     [1, 0, 0],
