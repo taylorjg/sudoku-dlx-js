@@ -18,9 +18,10 @@ const puzzle = [
     " 9    4  "
 ];
 
-const ROWS = Array.from(Array(9).keys());
-const COLS = Array.from(Array(9).keys());
-const DIGITS = Array.from(Array(9).keys()).map(n => n + 1);
+const INDICES = Array.from(Array(9).keys());
+const ROWS = INDICES;
+const COLS = INDICES;
+const DIGITS = INDICES.map(n => n + 1);
 
 const buildInternalRows = puzzle => {
     const seqs = ROWS.map(row =>
@@ -68,34 +69,43 @@ const internalRows = buildInternalRows(puzzle);
 const dlxRows = buildDlxRows(internalRows);
 
 const gen = solve(dlxRows);
-const solution = gen.next().value;
+const solutionRowIndices = gen.next().value;
 
-const v1 = solution.map(rowIndex => internalRows[rowIndex]);
-v1.sort((a, b) => {
-    const row1 = a.coords.row;
-    const col1 = a.coords.col;
-    const row2 = b.coords.row;
-    const col2 = b.coords.col;
-    const n1 = row1 * 9 + col1;
-    const n2 = row2 * 9 + col2;
-    return n1 - n2;
-});
-const v2 = Array(81).fill(' ');
-v1.forEach(ir => {
-    const { row, col } = ir.coords;
-    v2[row * 9 + col] = ir.value;
-});
-const v3 = v2.join('');
-const v4 = [0, 1, 2, 3, 4, 5, 6, 7, 8].reduce((acc, n) => {
-    acc.push(v3.substr(n * 9, 9));
-    return acc;
-}, []);
+const rowIndicesToSolution = (rowIndices, internalRows) => {
+    const solutionInternalRows = rowIndices.map(rowIndex => internalRows[rowIndex]);
+    solutionInternalRows.sort((a, b) => {
+        const ar = a.coords.row;
+        const ac = a.coords.col;
+        const br = b.coords.row;
+        const bc = b.coords.col;
+        const n1 = ar * 9 + ac;
+        const n2 = br * 9 + bc;
+        return n1 - n2;
+    });
+
+    // TODO: can we do this more functionally ?
+    const valuesArray = Array(81).fill(' ');
+    solutionInternalRows.forEach(internalRow => {
+        const { row, col } = internalRow.coords;
+        valuesArray[row * 9 + col] = internalRow.value;
+    });
+
+    const valuesString = valuesArray.join('');
+    return INDICES.reduce((acc, n) => {
+        acc.push(valuesString.substr(n * 9, 9));
+        return acc;
+    }, []);
+};
+
+const solution = rowIndicesToSolution(solutionRowIndices, internalRows);
+
+
 
 const store = createStore(rootReducer);
 
 render(
-  <Provider store={store}>
-    <App solution={v4} />
-  </Provider>,
-  document.getElementById('root')
+    <Provider store={store}>
+        <App solution={solution} />
+    </Provider>,
+    document.getElementById('root')
 );
