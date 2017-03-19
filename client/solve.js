@@ -29,10 +29,10 @@ export const rowIndicesToSolution = (puzzle, internalRows, rowIndices) => {
         const n2 = br * 9 + bc;
         return n1 - n2;
     });
-    const values = C.PUZZLE.slice();
+    const values = flatten(C.PUZZLE.map(s => s.split('')))
     solutionInternalRows.forEach(internalRow => {
         const { row, col } = internalRow.coords;
-        values[row * 9 + col] = internalRow.value;
+        values[row * 9 + col] = String(internalRow.value);
     });
     return INDICES.reduce((acc, n) => {
         acc.push(values.slice(n * 9, n * 9 + 9).join(''));
