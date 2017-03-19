@@ -4,10 +4,17 @@ import dlxSolve from '../dlxlib';
 const internalOnSearchStep = (onSearchStep, internalRows) =>
     rowIndices => onSearchStep(internalRows, rowIndices);
 
-export const solve = (puzzle, onSearchStep) => {
+const internalOnSolutionFound = (onSolutionFound, internalRows) =>
+    rowIndices => onSolutionFound(internalRows, rowIndices);
+
+export const solve = (puzzle, onSearchStep, onSolutionFound) => {
     const internalRows = buildInternalRows(C.PUZZLE);
     const dlxRows = buildDlxRows(internalRows);
-    dlxSolve(dlxRows, internalOnSearchStep(onSearchStep, internalRows)).next();
+    const solutionGenerator = dlxSolve(
+        dlxRows,
+        internalOnSearchStep(onSearchStep, internalRows),
+        internalOnSolutionFound(onSolutionFound, internalRows));
+    solutionGenerator.next();
     return internalRows;
 };
 

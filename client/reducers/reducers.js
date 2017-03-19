@@ -14,10 +14,10 @@ export default (state = initialState, action) => {
         case A.START_SOLVING:
             return { ...state, currentValues: PUZZLE, solving: true };
             
-        case A.PARTIAL_SOLUTION:
+        case A.DRAW_PARTIAL_SOLUTION:
             return { ...state, currentValues: action.partialSolution };
             
-        case A.SOLUTION:
+        case A.DRAW_SOLUTION:
             return { ...state, currentValues: action.solution, solving: false };
 
         default:

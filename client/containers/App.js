@@ -40,7 +40,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    onSolve: () => dispatch(actions.startSolving())
+    onSolve: () => dispatch(actions.startSolvingAsync())
 });
 
 export default connect(
