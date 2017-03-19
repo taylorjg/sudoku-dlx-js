@@ -1,1 +1,3 @@
-export const SHOW_SOLUTION = 'SHOW_SOLUTION';
+export const START_SOLVING = 'START_SOLVING';
+export const PARTIAL_SOLUTION = 'PARTIAL_SOLUTION';
+export const SOLUTION = 'SOLUTION';

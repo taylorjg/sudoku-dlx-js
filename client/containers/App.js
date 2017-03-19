@@ -17,9 +17,9 @@ class App extends Component {
                     <div className="col-md-offset-4 col-md-4">
                         <button
                             className="btn btn-sm btn-primary"
-                            onClick={() => props.onShowSolution(props.solution)}
+                            onClick={props.onSolve}
                         >
-                            Show Solution
+                            Solve
                         </button>
                     </div>
                 </div>
@@ -31,8 +31,8 @@ class App extends Component {
 App.propTypes = {
     initialValues: PropTypes.arrayOf(PropTypes.string).isRequired,
     currentValues: PropTypes.arrayOf(PropTypes.string).isRequired,
-    solution: PropTypes.arrayOf(PropTypes.string).isRequired,
-    onShowSolution: PropTypes.func.isRequired
+    solving: PropTypes.bool.isRequired,
+    onSolve: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -40,7 +40,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    onShowSolution: solution => dispatch(actions.showSolution(solution))
+    onSolve: () => dispatch(actions.startSolving())
 });
 
 export default connect(
