@@ -42,3 +42,7 @@
 #board td .initialValue {
     color: red;
 }
+
+button {
+    margin-top: 10px;
+}

@@ -1,8 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import * as C from '../constants';
-import * as actions from '../actions';
 import Board from '../components/Board';
+import * as actions from '../actions';
 
 class App extends Component {
     render() {
@@ -13,8 +12,15 @@ class App extends Component {
                     <div className="col-md-offset-4 col-md-4">
                         <Board { ...props } />
                     </div>
+                </div>
+                <div className="row">
                     <div className="col-md-offset-4 col-md-4">
-                        <button className="btn btn-sm btn-primary" onClick={() => props.onClick(props.solution)}>Show Solution</button>
+                        <button
+                            className="btn btn-sm btn-primary"
+                            onClick={() => props.onShowSolution(props.solution)}
+                        >
+                            Show Solution
+                        </button>
                     </div>
                 </div>
             </div>
@@ -25,17 +31,16 @@ class App extends Component {
 App.propTypes = {
     initialValues: PropTypes.arrayOf(PropTypes.string).isRequired,
     currentValues: PropTypes.arrayOf(PropTypes.string).isRequired,
-    onClick: PropTypes.func.isRequired,
-    solution: PropTypes.arrayOf(PropTypes.string).isRequired
+    solution: PropTypes.arrayOf(PropTypes.string).isRequired,
+    onShowSolution: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-    initialValues: state.initialValues,
-    currentValues: state.currentValues,
+    ...state
 });
 
 const mapDispatchToProps = dispatch => ({
-    onClick: solution => dispatch(actions.showSolution(solution))
+    onShowSolution: solution => dispatch(actions.showSolution(solution))
 });
 
 export default connect(
