@@ -42,8 +42,8 @@ function* search(searchState) {
         if (searchState.currentSolution.length) {
             searchState.solutionFound();
             yield searchState.currentSolution.slice().sort();
-            return;
         }
+        return;
     }
 
     const c = chooseColumnWithFewestRows(searchState);
