@@ -8,7 +8,7 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
-    console.log(`action: ${JSON.stringify(action)}`);
+    // console.log(`action: ${JSON.stringify(action)}`);
     switch (action.type) {
 
         case A.START_SOLVING:

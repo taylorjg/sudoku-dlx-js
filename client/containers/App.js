@@ -6,21 +6,26 @@ import * as actions from '../actions';
 class App extends Component {
     render() {
         const props = this.props;
+        const conditionalAttributes = {};
+        if (props.solving) {
+            conditionalAttributes.disabled = 'disabled';
+        }
         return (
             <div className="container">
                 <div className="row">
-                    <div className="col-md-offset-4 col-md-4">
-                        <Board { ...props } />
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-md-offset-4 col-md-4">
-                        <button
-                            className="btn btn-sm btn-primary"
-                            onClick={props.onSolve}
-                        >
-                            Solve
-                        </button>
+                    <div className="col-md-offset-3 col-md-6">
+                        <div id="wrapper">
+                            <Board { ...props } />
+                            <div>
+                                <button
+                                    className="btn btn-sm btn-primary"
+                                    onClick={props.onSolve}
+                                    { ...conditionalAttributes }
+                                >
+                                    Solve
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

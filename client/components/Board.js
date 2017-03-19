@@ -17,21 +17,19 @@ const Board = ({
             </td>
         );
     return (
-        <div>
-            <table id="board">
-                <tbody>
-                    <tr>{rowOfCells(0)}</tr>
-                    <tr>{rowOfCells(1)}</tr>
-                    <tr>{rowOfCells(2)}</tr>
-                    <tr>{rowOfCells(3)}</tr>
-                    <tr>{rowOfCells(4)}</tr>
-                    <tr>{rowOfCells(5)}</tr>
-                    <tr>{rowOfCells(6)}</tr>
-                    <tr>{rowOfCells(7)}</tr>
-                    <tr>{rowOfCells(8)}</tr>
-                </tbody>
-            </table>
-        </div>
+        <table id="board">
+            <tbody>
+                <tr>{rowOfCells(0)}</tr>
+                <tr>{rowOfCells(1)}</tr>
+                <tr>{rowOfCells(2)}</tr>
+                <tr>{rowOfCells(3)}</tr>
+                <tr>{rowOfCells(4)}</tr>
+                <tr>{rowOfCells(5)}</tr>
+                <tr>{rowOfCells(6)}</tr>
+                <tr>{rowOfCells(7)}</tr>
+                <tr>{rowOfCells(8)}</tr>
+            </tbody>
+        </table>
     );
 };
 
