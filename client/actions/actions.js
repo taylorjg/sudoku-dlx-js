@@ -12,6 +12,10 @@ export const cancelSolving = () => ({
     type: A.CANCEL_SOLVING
 });
 
+export const finishSolving = () => ({
+    type: A.FINISH_SOLVING
+});
+
 export const drawPartialSolution = partialSolution => ({
     type: A.DRAW_PARTIAL_SOLUTION,
     partialSolution
@@ -30,7 +34,7 @@ export const startSolvingAsync = () =>
             const action = queue.shift();
             dispatch(action);
             if (action.type === A.DRAW_SOLUTION) {
-                clearInterval(timerId);
+                finishSolvingAsync();
             }
         }, state.drawingInterval);
         const onSearchStep = (internalRows, rowIndices) => {
@@ -52,4 +56,12 @@ export const cancelSolvingAsync = () =>
         clearInterval(state.timerId);
         state.queue.splice(0);
         dispatch(cancelSolving());
+    };
+
+export const finishSolvingAsync = () =>
+    (dispatch, getState) => {
+        const state = getState();
+        clearInterval(state.timerId);
+        state.queue.splice(0);
+        dispatch(finishSolving());
     };

@@ -32,6 +32,14 @@ export default (state = initialState, action) => {
                 timerId: null,
                 queue: null
             };
+
+        case A.FINISH_SOLVING:
+            return {
+                ...state,
+                solving: false,
+                timerId: null,
+                queue: null
+            };
             
         case A.DRAW_PARTIAL_SOLUTION:
             return {
