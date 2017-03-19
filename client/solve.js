@@ -14,8 +14,7 @@ export const solve = (puzzle, onSearchStep, onSolutionFound) => {
         dlxRows,
         internalOnSearchStep(onSearchStep, internalRows),
         internalOnSolutionFound(onSolutionFound, internalRows));
-    solutionGenerator.next();
-    return internalRows;
+    return solutionGenerator;
 };
 
 export const rowIndicesToSolution = (puzzle, internalRows, rowIndices) => {

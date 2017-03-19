@@ -35,5 +35,6 @@ export const startSolvingAsync = () =>
             queue.push(drawSolution(solution));
         };
         dispatch(startSolving());
-        solve(PUZZLE, onSearchStep, onSolutionFound);
+        const solutionGenerator = solve(PUZZLE, onSearchStep, onSolutionFound);
+        solutionGenerator.next();
     };
