@@ -1,8 +1,14 @@
+[![CircleCI](https://circleci.com/gh/taylorjg/sudoku-dlx-js.svg?style=svg)](https://circleci.com/gh/taylorjg/sudoku-dlx-js)
 
 ## Description
 
 Sudoku solver using [Dancing Links](https://en.wikipedia.org/wiki/Dancing_Links).
 I hope to extract the implementation of Dancing Links into a separate npm package.
+
+## Try it out
+
+[Try it on Heroku](https://sudoku-dlx-js.herokuapp.com/)
+(_it may take 10s to re-activate_)
 
 ## Links
 
