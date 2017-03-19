@@ -3,6 +3,8 @@
         "es2015"
     ],
     "plugins": [
+        "transform-react-jsx",
+        "transform-object-rest-spread",
         "transform-regenerator"
     ]
 }

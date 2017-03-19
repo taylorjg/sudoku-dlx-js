@@ -1,3 +1,9 @@
+import React from 'react';
+import { render } from 'react-dom';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import rootReducer from './reducers';
+import App from './containers/App';
 import solve from '../dlxlib';
 
 const puzzle = [
@@ -59,9 +65,37 @@ const encode = (major, minor) => {
 };
 
 const internalRows = buildInternalRows(puzzle);
-
 const dlxRows = buildDlxRows(internalRows);
 
 const gen = solve(dlxRows);
 const solution = gen.next().value;
-console.log(`solution: ${JSON.stringify(solution)}`);
+
+const v1 = solution.map(rowIndex => internalRows[rowIndex]);
+v1.sort((a, b) => {
+    const row1 = a.coords.row;
+    const col1 = a.coords.col;
+    const row2 = b.coords.row;
+    const col2 = b.coords.col;
+    const n1 = row1 * 9 + col1;
+    const n2 = row2 * 9 + col2;
+    return n1 - n2;
+});
+const v2 = Array(81).fill(' ');
+v1.forEach(ir => {
+    const { row, col } = ir.coords;
+    v2[row * 9 + col] = ir.value;
+});
+const v3 = v2.join('');
+const v4 = [0, 1, 2, 3, 4, 5, 6, 7, 8].reduce((acc, n) => {
+    acc.push(v3.substr(n * 9, 9));
+    return acc;
+}, []);
+
+const store = createStore(rootReducer);
+
+render(
+  <Provider store={store}>
+    <App solution={v4} />
+  </Provider>,
+  document.getElementById('root')
+);

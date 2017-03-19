@@ -7,7 +7,7 @@ module.exports = {
     entry: [
         'babel-polyfill',
         './dlxlib/dlx.js',
-        './client/app.js'
+        './client/index.js'
     ],
     output: {
         path: serverPublic,

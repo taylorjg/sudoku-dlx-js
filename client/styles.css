@@ -30,3 +30,15 @@
 #board tr:nth-child(9) {
     border-bottom: 3px solid black;
 }
+
+#board td {
+    color: black;
+    font-size: 24pt;
+    font-family: Courier New, Courier, monospace;
+    vertical-align: middle;
+    text-align: center;
+}
+
+#board td .initialValue {
+    color: red;
+}
