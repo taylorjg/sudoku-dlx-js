@@ -56,6 +56,13 @@ export default (state = initialState, action) => {
                 queue: null
             };
 
+        case A.CHANGE_DRAWING_INTERVAL:
+            return {
+                ...state,
+                drawingInterval: action.drawingInterval,
+                timerId: action.timerId
+            };
+
         default:
             return state;
     }

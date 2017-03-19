@@ -18,8 +18,12 @@ class App extends Component {
                         <div id="wrapper">
                             <Board { ...props } />
                             <div>
-                                {!props.solving && <button className="btn btn-sm btn-primary" onClick={props.onSolve}>Solve</button>}
-                                {props.solving && <button className="btn btn-sm btn-danger" onClick={props.onCancel}>Cancel</button>}
+                                <div id="controls">
+                                    {!props.solving && <input type="button" value="Solve" className="btn btn-sm btn-primary" onClick={props.onSolve} />}
+                                    {props.solving && <input type="button" value="Cancel" className="btn btn-sm btn-danger" onClick={props.onCancel} />}
+                                    <label htmlFor="drawingInterval">Drawing interval (ms): {props.drawingInterval}</label>
+                                    <input id="drawingInterval" type="range" value={props.drawingInterval} onChange={props.onChangeDrawingInterval} />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -34,8 +38,10 @@ App.propTypes = {
     initialValues: PropTypes.arrayOf(PropTypes.string).isRequired,
     currentValues: PropTypes.arrayOf(PropTypes.string).isRequired,
     solving: PropTypes.bool.isRequired,
+    drawingInterval: PropTypes.number.isRequired,
     onSolve: PropTypes.func.isRequired,
-    onCancel: PropTypes.func.isRequired
+    onCancel: PropTypes.func.isRequired,
+    onChangeDrawingInterval: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -44,7 +50,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     onSolve: () => dispatch(actions.startSolvingAsync()),
-    onCancel: () => dispatch(actions.cancelSolvingAsync())
+    onCancel: () => dispatch(actions.cancelSolvingAsync()),
+    onChangeDrawingInterval: ev => dispatch(actions.changeDrawingIntervalAsync(Number(ev.target.value))),
 });
 
 export default connect(

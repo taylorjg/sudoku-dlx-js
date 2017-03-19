@@ -53,6 +53,21 @@
     color: red;
 }
 
-button {
+#controls {
+    vertical-align: middle;
+    width: 100%;
+}
+
+input {
     margin-top: 10px;
+    vertical-align: middle;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+}
+
+input[type='range'] {
+    width: 100%;
 }

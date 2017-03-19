@@ -26,17 +26,28 @@ export const drawSolution = solution => ({
     solution
 });
 
+export const changeDrawingInterval = (drawingInterval, timerId) => ({
+    type: A.CHANGE_DRAWING_INTERVAL,
+    drawingInterval,
+    timerId
+});
+
+const onDrawingInterval = (dispatch, queue) =>
+    () => {
+        if (queue.length > 0) {
+            const action = queue.shift();
+            dispatch(action);
+            if (action.type === A.DRAW_SOLUTION) {
+                dispatch(finishSolvingAsync());
+            }
+        }
+    };
+
 export const startSolvingAsync = () =>
     (dispatch, getState) => {
         const state = getState();
         const queue = [];
-        const timerId = setInterval(() => {
-            const action = queue.shift();
-            dispatch(action);
-            if (action.type === A.DRAW_SOLUTION) {
-                finishSolvingAsync();
-            }
-        }, state.drawingInterval);
+        const timerId = setInterval(onDrawingInterval(dispatch, queue), state.drawingInterval);
         const onSearchStep = (internalRows, rowIndices) => {
             const partialSolution = rowIndicesToSolution(PUZZLE, internalRows, rowIndices);
             queue.push(drawPartialSolution(partialSolution));
@@ -54,7 +65,9 @@ export const cancelSolvingAsync = () =>
     (dispatch, getState) => {
         const state = getState();
         clearInterval(state.timerId);
-        state.queue.splice(0);
+        if (state.queue) {
+            state.queue.splice(0);
+        }
         dispatch(cancelSolving());
     };
 
@@ -62,6 +75,18 @@ export const finishSolvingAsync = () =>
     (dispatch, getState) => {
         const state = getState();
         clearInterval(state.timerId);
-        state.queue.splice(0);
         dispatch(finishSolving());
+    };
+
+export const changeDrawingIntervalAsync = drawingInterval =>
+    (dispatch, getState) => {
+        const state = getState();
+        if (state.solving) {
+            clearInterval(state.timerId);
+            const timerId = setInterval(onDrawingInterval(dispatch, state.queue), drawingInterval);
+            dispatch(changeDrawingInterval(drawingInterval, timerId));
+        }
+        else {
+            dispatch(changeDrawingInterval(drawingInterval, state.timerId));
+        }
     };
