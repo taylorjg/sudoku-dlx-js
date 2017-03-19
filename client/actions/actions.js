@@ -2,8 +2,14 @@ import * as A from './actionTypes';
 import { PUZZLE } from '../constants';
 import { solve, rowIndicesToSolution } from '../solve';
 
-export const startSolving = () => ({
-    type: A.START_SOLVING
+export const startSolving = (timerId, queue) => ({
+    type: A.START_SOLVING,
+    timerId,
+    queue
+});
+
+export const cancelSolving = () => ({
+    type: A.CANCEL_SOLVING
 });
 
 export const drawPartialSolution = partialSolution => ({
@@ -17,7 +23,8 @@ export const drawSolution = solution => ({
 });
 
 export const startSolvingAsync = () =>
-    dispatch => {
+    (dispatch, getState) => {
+        const state = getState();
         const queue = [];
         const timerId = setInterval(() => {
             const action = queue.shift();
@@ -25,7 +32,7 @@ export const startSolvingAsync = () =>
             if (action.type === A.DRAW_SOLUTION) {
                 clearInterval(timerId);
             }
-        }, 50);
+        }, state.drawingInterval);
         const onSearchStep = (internalRows, rowIndices) => {
             const partialSolution = rowIndicesToSolution(PUZZLE, internalRows, rowIndices);
             queue.push(drawPartialSolution(partialSolution));
@@ -34,7 +41,15 @@ export const startSolvingAsync = () =>
             const solution = rowIndicesToSolution(PUZZLE, internalRows, rowIndices);
             queue.push(drawSolution(solution));
         };
-        dispatch(startSolving());
+        dispatch(startSolving(timerId, queue));
         const solutionGenerator = solve(PUZZLE, onSearchStep, onSolutionFound);
         solutionGenerator.next();
+    };
+
+export const cancelSolvingAsync = () =>
+    (dispatch, getState) => {
+        const state = getState();
+        clearInterval(state.timerId);
+        state.queue.splice(0);
+        dispatch(cancelSolving());
     };

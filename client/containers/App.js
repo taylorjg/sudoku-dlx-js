@@ -6,10 +6,6 @@ import * as actions from '../actions';
 class App extends Component {
     render() {
         const props = this.props;
-        const conditionalAttributes = {};
-        if (props.solving) {
-            conditionalAttributes.disabled = 'disabled';
-        }
         return (
             <div className="container">
                 <div className="row">
@@ -22,13 +18,8 @@ class App extends Component {
                         <div id="wrapper">
                             <Board { ...props } />
                             <div>
-                                <button
-                                    className="btn btn-sm btn-primary"
-                                    onClick={props.onSolve}
-                                    { ...conditionalAttributes }
-                                >
-                                    Solve
-                                </button>
+                                {!props.solving && <button className="btn btn-sm btn-primary" onClick={props.onSolve}>Solve</button>}
+                                {props.solving && <button className="btn btn-sm btn-danger" onClick={props.onCancel}>Cancel</button>}
                             </div>
                         </div>
                     </div>
@@ -43,7 +34,8 @@ App.propTypes = {
     initialValues: PropTypes.arrayOf(PropTypes.string).isRequired,
     currentValues: PropTypes.arrayOf(PropTypes.string).isRequired,
     solving: PropTypes.bool.isRequired,
-    onSolve: PropTypes.func.isRequired
+    onSolve: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -51,7 +43,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    onSolve: () => dispatch(actions.startSolvingAsync())
+    onSolve: () => dispatch(actions.startSolvingAsync()),
+    onCancel: () => dispatch(actions.cancelSolvingAsync())
 });
 
 export default connect(
