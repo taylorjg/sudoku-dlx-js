@@ -24,7 +24,8 @@
     "webpack-dev-server": "^2.4.2"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "heroku-postbuild": "npm install --only=dev && webpack"
   },
   "repository": {
     "type": "git",
