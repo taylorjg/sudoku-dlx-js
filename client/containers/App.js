@@ -13,6 +13,11 @@ class App extends Component {
         return (
             <div className="container">
                 <div className="row">
+                    <div className="col-md-12">
+                        <span className="pull-right"><i>version: {props.version}</i></span>
+                    </div>
+                </div>
+                <div className="row">
                     <div className="col-md-offset-3 col-md-6">
                         <div id="wrapper">
                             <Board { ...props } />
@@ -34,6 +39,7 @@ class App extends Component {
 }
 
 App.propTypes = {
+    version: PropTypes.string.isRequired,
     initialValues: PropTypes.arrayOf(PropTypes.string).isRequired,
     currentValues: PropTypes.arrayOf(PropTypes.string).isRequired,
     solving: PropTypes.bool.isRequired,

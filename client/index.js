@@ -8,9 +8,12 @@ import App from './containers/App';
 
 const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
 
+const root = document.getElementById('root');
+const version = root.getAttribute('version');
+
 render(
     <Provider store={store}>
-        <App />
+        <App version={version} />
     </Provider>,
-    document.getElementById('root')
+    root
 );
