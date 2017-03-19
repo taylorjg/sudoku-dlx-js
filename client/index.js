@@ -4,19 +4,8 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import rootReducer from './reducers';
 import App from './containers/App';
+import * as C from './constants';
 import solve from '../dlxlib';
-
-const puzzle = [
-    "8        ",
-    "  36     ",
-    " 7  9 2  ",
-    " 5   7   ",
-    "    457  ",
-    "   1   3 ",
-    "  1    68",
-    "  85   1 ",
-    " 9    4  "
-];
 
 const INDICES = Array.from(Array(9).keys());
 const ROWS = INDICES;
@@ -65,13 +54,7 @@ const encode = (major, minor) => {
     return result;
 };
 
-const internalRows = buildInternalRows(puzzle);
-const dlxRows = buildDlxRows(internalRows);
-
-const gen = solve(dlxRows);
-const solutionRowIndices = gen.next().value;
-
-const rowIndicesToSolution = (rowIndices, internalRows) => {
+const rowIndicesToSolution = (puzzle, internalRows, rowIndices) => {
     const solutionInternalRows = rowIndices.map(rowIndex => internalRows[rowIndex]);
     solutionInternalRows.sort((a, b) => {
         const ar = a.coords.row;
@@ -82,24 +65,22 @@ const rowIndicesToSolution = (rowIndices, internalRows) => {
         const n2 = br * 9 + bc;
         return n1 - n2;
     });
-
-    // TODO: can we do this more functionally ?
-    const valuesArray = Array(81).fill(' ');
+    const values = C.PUZZLE.slice();
     solutionInternalRows.forEach(internalRow => {
         const { row, col } = internalRow.coords;
-        valuesArray[row * 9 + col] = internalRow.value;
+        values[row * 9 + col] = internalRow.value;
     });
-
-    const valuesString = valuesArray.join('');
     return INDICES.reduce((acc, n) => {
-        acc.push(valuesString.substr(n * 9, 9));
+        acc.push(values.slice(n * 9, n * 9 + 9).join(''));
         return acc;
     }, []);
 };
 
-const solution = rowIndicesToSolution(solutionRowIndices, internalRows);
-
-
+const internalRows = buildInternalRows(C.PUZZLE);
+const dlxRows = buildDlxRows(internalRows);
+const solutionGenerator = solve(dlxRows);
+const solutionRowIndices = solutionGenerator.next().value;
+const solution = rowIndicesToSolution(C.PUZZLE, internalRows, solutionRowIndices);
 
 const store = createStore(rootReducer);
 
