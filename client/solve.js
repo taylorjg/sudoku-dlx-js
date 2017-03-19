@@ -19,26 +19,22 @@ export const solve = (puzzle, onSearchStep, onSolutionFound) => {
 };
 
 export const rowIndicesToSolution = (puzzle, internalRows, rowIndices) => {
+    const values = puzzleStringToValues(puzzle);
     const solutionInternalRows = rowIndices.map(rowIndex => internalRows[rowIndex]);
-    solutionInternalRows.sort((a, b) => {
-        const ar = a.coords.row;
-        const ac = a.coords.col;
-        const br = b.coords.row;
-        const bc = b.coords.col;
-        const n1 = ar * 9 + ac;
-        const n2 = br * 9 + bc;
-        return n1 - n2;
-    });
-    const values = flatten(C.PUZZLE.map(s => s.split('')))
     solutionInternalRows.forEach(internalRow => {
         const { row, col } = internalRow.coords;
         values[row * 9 + col] = String(internalRow.value);
     });
-    return INDICES.reduce((acc, n) => {
+    return valuesToPuzzleString(values);
+};
+
+const puzzleStringToValues = puzzle => flatten(C.PUZZLE.map(s => s.split('')));
+
+const valuesToPuzzleString = values =>
+    INDICES.reduce((acc, n) => {
         acc.push(values.slice(n * 9, n * 9 + 9).join(''));
         return acc;
     }, []);
-};
 
 const INDICES = Array.from(Array(9).keys());
 const ROWS = INDICES;
