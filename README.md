@@ -10,6 +10,10 @@ I hope to extract the implementation of Dancing Links into a separate npm packag
 [Try it on Heroku](https://sudoku-dlx-js.herokuapp.com/)
 (_it may take 10s to re-activate_)
 
+## TODO
+
+* Extract the dlxlib folder into an npm package
+
 ## Links
 
 * [Knuth's Dancing Links Paper](http://arxiv.org/pdf/cs/0011047v1.pdf "Dancing Links Paper")
