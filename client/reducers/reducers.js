@@ -50,10 +50,7 @@ export default (state = initialState, action) => {
         case A.DRAW_SOLUTION:
             return {
                 ...state,
-                currentValues: action.solution,
-                solving: false,
-                timerId: null,
-                queue: null
+                currentValues: action.solution
             };
 
         case A.CHANGE_DRAWING_INTERVAL:
