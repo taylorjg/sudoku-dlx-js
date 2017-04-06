@@ -3,7 +3,6 @@
 ## Description
 
 Sudoku solver using [Dancing Links](https://en.wikipedia.org/wiki/Dancing_Links).
-I hope to extract the implementation of Dancing Links into a separate npm package.
 
 ## Try it out
 

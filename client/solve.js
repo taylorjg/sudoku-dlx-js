@@ -1,5 +1,5 @@
+import { solutionGenerator } from 'dlxlib';
 import * as C from './constants';
-import dlxSolve from '../dlxlib';
 
 const internalOnSearchStep = (onSearchStep, internalRows) =>
     rowIndices => onSearchStep(internalRows, rowIndices);
@@ -9,12 +9,11 @@ const internalOnSolutionFound = (onSolutionFound, internalRows) =>
 
 export const solve = (puzzle, onSearchStep, onSolutionFound) => {
     const internalRows = buildInternalRows(C.PUZZLE);
-    const dlxRows = buildDlxRows(internalRows);
-    const solutionGenerator = dlxSolve(
-        dlxRows,
+    const matrix = buildDlxMatrix(internalRows);
+    return solutionGenerator(
+        matrix,
         internalOnSearchStep(onSearchStep, internalRows),
         internalOnSolutionFound(onSolutionFound, internalRows));
-    return solutionGenerator;
 };
 
 export const rowIndicesToSolution = (puzzle, internalRows, rowIndices) => {
@@ -60,7 +59,7 @@ const buildInternalRowsForCell = (coords, initialValue) => {
         : DIGITS.map(digit => ({ coords, value: digit, isInitialValue: false }));
 };
 
-const buildDlxRows = internalRows => internalRows.map(internalRow => buildDlxRow(internalRow));
+const buildDlxMatrix = internalRows => internalRows.map(internalRow => buildDlxRow(internalRow));
 
 const buildDlxRow = internalRow => {
     const { row, col } = internalRow.coords;
