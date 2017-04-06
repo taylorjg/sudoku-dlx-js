@@ -1,10 +1,10 @@
 {
   "name": "sudoku-dlx-js",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Visual Sudoku solver using dlxlib",
   "main": "server/app.js",
   "dependencies": {
-    "dlxlib": "^1.0.1",
+    "dlxlib": "^1.0.2",
     "express": "^4.15.2",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
