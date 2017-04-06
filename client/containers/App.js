@@ -22,7 +22,7 @@ class App extends Component {
                                     {!props.solving && <input type="button" value="Solve" className="btn btn-sm btn-primary" onClick={props.onSolve} />}
                                     {props.solving && <input type="button" value="Cancel" className="btn btn-sm btn-danger" onClick={props.onCancel} />}
                                     <label htmlFor="drawingInterval">Drawing interval (ms): {props.drawingInterval}</label>
-                                    <input id="drawingInterval" type="range" value={props.drawingInterval} onChange={props.onChangeDrawingInterval} />
+                                    <input id="drawingInterval" type="range" value={props.drawingInterval} onChange={ev => props.onChangeDrawingInterval(Number(ev.target.value))} />
                                 </div>
                             </div>
                         </div>
@@ -44,14 +44,12 @@ App.propTypes = {
     onChangeDrawingInterval: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => ({
-    ...state
-});
+const mapStateToProps = state => state;
 
 const mapDispatchToProps = dispatch => ({
     onSolve: () => dispatch(actions.startSolvingAsync()),
     onCancel: () => dispatch(actions.cancelSolvingAsync()),
-    onChangeDrawingInterval: ev => dispatch(actions.changeDrawingIntervalAsync(Number(ev.target.value))),
+    onChangeDrawingInterval: value => dispatch(actions.changeDrawingIntervalAsync(value)),
 });
 
 export default connect(
