@@ -1,0 +1,73 @@
+.container {
+    margin-top: 20px;
+}
+
+#wrapper {
+    display: table;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#board td {
+    width: 40px;
+    height: 40px;
+}
+
+#board td {
+    border-left: 1px solid black;
+}
+
+#board td:nth-child(3n+1) {
+    border-left: 3px solid black;
+}
+
+#board td:nth-child(9) {
+    border-right: 3px solid black;
+}
+
+#board tr {
+    border-top: 1px solid black;
+}
+
+#board tr:nth-child(3n+1) {
+    border-top: 3px solid black;
+}
+
+#board tr:nth-child(9) {
+    border-bottom: 3px solid black;
+}
+
+#board td div {
+    width: 36px;
+    height: 36px;
+    margin: 2px;
+    line-height: 36px;
+    color: black;
+    font-size: 24pt;
+    font-family: Courier New, Courier, monospace;
+    vertical-align: middle;
+    text-align: center;
+}
+
+#board td div.initialValue {
+    color: red;
+}
+
+#controls {
+    vertical-align: middle;
+    width: 100%;
+}
+
+input {
+    margin-top: 10px;
+    vertical-align: middle;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+}
+
+input[type='range'] {
+    width: 100%;
+}
