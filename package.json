@@ -5,7 +5,7 @@
   "main": "server/app.js",
   "dependencies": {
     "dlxlib": "^1.0.2",
-    "express": "^4.15.2",
+    "gh-pages": "^4.0.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.3",
@@ -25,13 +25,13 @@
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.4.2"
   },
-  "scripts": {
-    "start": "node server/app.js",
-    "heroku-postbuild": "npm install --only=dev && webpack"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/taylorjg/sudoku-dlx-js.git"
+  },
+  "scripts": {
+    "build": "webpack",
+    "deploy": "npm run build && gh-pages -d build"
   },
   "keywords": [
     "DLX",
